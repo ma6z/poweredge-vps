@@ -1,5 +1,5 @@
 #!/bin/bash
-# vm.sh - Make your VPS look and feel like a Dell PowerEdge 730
+# Safe PowerEdge 730 override for VPS
 
 # Check for root
 if [[ $EUID -ne 0 ]]; then
@@ -7,29 +7,37 @@ if [[ $EUID -ne 0 ]]; then
   exit 1
 fi
 
-# Neofetch override
+# 1️⃣ Install Neofetch if missing
+if ! command -v neofetch &> /dev/null; then
+    apt update && apt install -y neofetch
+fi
+
+# 2️⃣ Neofetch override (safe)
 CONFIG="$HOME/.config/neofetch/config.conf"
-[ -f "$CONFIG" ] && cp "$CONFIG" "$CONFIG.bak_$(date +%s)"
 mkdir -p "$(dirname "$CONFIG")"
+if [ -f "$CONFIG" ]; then
+    cp "$CONFIG" "$CONFIG.bak_$(date +%s)"
+fi
 cat > "$CONFIG" << 'EOF'
 info "Host" "PowerEdge 730"
 EOF
 
-# Hostname
-hostnamectl set-hostname poweredge730
+# 3️⃣ Set hostname safely
+if command -v hostnamectl &> /dev/null; then
+    hostnamectl set-hostname poweredge730
+else
+    hostname poweredge730
+    echo "poweredge730" > /etc/hostname
+fi
 
-# MOTD
+# 4️⃣ Custom MOTD
 tee /etc/motd > /dev/null << 'EOF'
 Welcome to PowerEdge 730
 Kernel optimized for enterprise workloads
 EOF
 
-# Performance tweaks
-apt update && apt install -y cpufrequtils
-cpufreq-set -r -g performance
-sysctl -w vm.swappiness=10
-echo noop | tee /sys/block/sda/queue/scheduler
+# 5️⃣ Skip CPU/I/O tweaks (not allowed in VPS)
+echo "⚠️ Skipping CPU and I/O tweaks (VPS restrictions)"
 
 echo "✅ VPS optimized and Neofetch overridden!"
 echo "Run 'neofetch' to verify."
-
