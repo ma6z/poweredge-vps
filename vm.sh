@@ -1,5 +1,5 @@
 #!/bin/bash
-# universal_vm.sh - PowerEdge 730 look for containers & cloud dev environments
+# final_vm.sh - PowerEdge 730 look for containers & cloud dev environments
 
 echo "⚡ Starting PowerEdge 730 setup..."
 
@@ -28,14 +28,16 @@ if ! command -v neofetch &> /dev/null; then
     fi
 fi
 
-# 3️⃣ Neofetch override
+# 3️⃣ Neofetch override (safe)
 CONFIG="$HOME/.config/neofetch/config.conf"
 mkdir -p "$(dirname "$CONFIG")"
 if [ -f "$CONFIG" ]; then
     cp "$CONFIG" "$CONFIG.bak_$(date +%s)"
 fi
+
+# Use underscore to avoid spaces issues
 cat > "$CONFIG" << 'EOF'
-info "Host" "PowerEdge 730"
+info "Host" "PowerEdge_730"
 EOF
 
 # 4️⃣ Custom welcome message in home directory
