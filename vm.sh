@@ -16,9 +16,9 @@ elif [ -n "$CODESANDBOX_PROJECT" ]; then
 fi
 echo "Detected environment: $ENV"
 
-# 2️⃣ Install neofetch if missing
+# 2️⃣ Install Neofetch if missing
 if ! command -v neofetch &> /dev/null; then
-    echo "Installing neofetch..."
+    echo "Installing Neofetch..."
     if command -v apt &> /dev/null; then
         sudo apt update && sudo apt install -y neofetch
     elif command -v yum &> /dev/null; then
@@ -38,18 +38,15 @@ cat > "$CONFIG" << 'EOF'
 info "Host" "PowerEdge 730"
 EOF
 
-# 4️⃣ Custom MOTD (if writable)
-if [ -w /etc/motd ] || [ -w /usr/etc/motd ]; then
-    echo "Setting MOTD..."
-    sudo tee /etc/motd > /dev/null << 'EOF'
+# 4️⃣ Custom welcome message in home directory
+WELCOME_FILE="$HOME/.poweredge_welcome"
+cat > "$WELCOME_FILE" << 'EOF'
 Welcome to PowerEdge 730
-Kernel optimized for containers & cloud dev
+Optimized for cloud dev & container environments
 EOF
-else
-    echo "⚠️ Cannot write MOTD in this environment, skipping."
-fi
+echo "Custom welcome message saved to $WELCOME_FILE"
 
-# 5️⃣ Skipping CPU/I/O tweaks
-echo "⚠️ Skipping CPU and I/O tweaks (not allowed in containers)"
+# 5️⃣ Skip CPU/I/O tweaks
+echo "⚠️ Skipping CPU and I/O tweaks (not supported in containers)"
 
 echo "✅ Setup complete! Run 'neofetch' to see your PowerEdge 730."
