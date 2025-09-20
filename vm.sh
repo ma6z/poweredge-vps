@@ -32,3 +32,4 @@ echo noop | tee /sys/block/sda/queue/scheduler
 
 echo "✅ VPS optimized and Neofetch overridden!"
 echo "Run 'neofetch' to verify."
+
