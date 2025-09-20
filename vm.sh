@@ -1,7 +1,7 @@
 #!/bin/bash
 # final_vm.sh - PowerEdge 730 look for containers & cloud dev environments
 
-echo "⚡ Starting PowerEdge 730 setup... Made By ZenX"
+echo "⚡ Making PowerEdge730"
 
 # 1️⃣ Detect environment
 ENV="unknown"
@@ -20,11 +20,11 @@ echo "Detected environment: $ENV"
 if ! command -v neofetch &> /dev/null; then
     echo "Installing Neofetch For Your VPS..."
     if command -v apt &> /dev/null; then
-        sudo apt update && sudo apt install -y neofetch
+        apt update && apt install neofetch -y
     elif command -v yum &> /dev/null; then
         sudo yum install -y neofetch
     else
-        echo "⚠️ Package manager not found. Skipping neofetch install."
+        echo "⚠️ Package manager not found. Skipping neofetch install please install docker if you already have docker run docker ps."
     fi
 fi
 
@@ -43,12 +43,12 @@ EOF
 # 4️⃣ Custom welcome message in home directory
 WELCOME_FILE="$HOME/.poweredge_welcome"
 cat > "$WELCOME_FILE" << 'EOF'
-Welcome to PowerEdge 730
+Welcome to PowerEdge 730 ubuntu.22.04
 Optimized for cloud dev & container environments
 EOF
 echo "Custom welcome message saved to $WELCOME_FILE"
 
 # 5️⃣ Skip CPU/I/O tweaks
-echo "⚠️ Skipping CPU and I/O tweaks (not supported in containers)"
+echo "⚠️ Skipping CPU and I/O tweaks (not supported in containers like codesandbox,github,gitpod,idx)"
 
 echo "✅ Setup complete! Run 'neofetch' to see your PowerEdge 730 Credits To ZenXSpyke."
